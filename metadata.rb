@@ -1,19 +1,12 @@
 name 'tricky_audit_wrapper'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Richard Nixon'
+maintainer_email 'richard.nixon@btinternet.com'
 license 'All Rights Reserved'
-description 'Installs/Configures tricky_audit_wrapper'
+description 'Selects compliance profiles to be run by the audit cookbook'
 version '0.1.0'
 chef_version '>= 15.0'
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/tricky_audit_wrapper/issues'
+issues_url 'https://github.com/trickyearlobe/tricky_audit_wrapper/issues'
+source_url 'https://github.com/trickyearlobe/tricky_audit_wrapper'
 
-# The `source_url` points to the development repository for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/tricky_audit_wrapper'
+depends 'audit'

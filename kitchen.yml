@@ -2,27 +2,27 @@
 driver:
   name: vagrant
 
-## The forwarded_port port feature lets you connect to ports on the VM guest via
-## localhost on the host.
-## see also: https://www.vagrantup.com/docs/networking/forwarded_ports.html
-
-#  network:
-#    - ["forwarded_port", {guest: 80, host: 8080}]
-
 provisioner:
   name: chef_zero
-
-  ## product_name and product_version specifies a specific Chef product and version to install.
-  ## see the Chef documentation for more details: https://docs.chef.io/workstation/config_yml_kitchen/
-  #  product_name: chef
-  #  product_version: 16
+<% if (ENV['a2fqdn'] && ENV['a2token']) %>
+  client_rb:
+    data_collector.server_url: https://<%= ENV['a2fqdn'] %>/data-collector/v0
+    data_collector.token: <%= ENV['a2token'] %>
+    ssl_verify_mode: :verify_none
+<% end %>    
 
 verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-20.04
+  - name: ubuntu-18.04
+  - name: ubuntu-18.10
+  - name: centos-7
   - name: centos-8
+  - name: generic/rhel7
+  - name: generic/rhel8
+  - name: win10
+  # - name: tas50/windows_2012r2
 
 suites:
   - name: default
@@ -30,3 +30,16 @@ suites:
       inspec_tests:
         - test/integration/default
     attributes:
+      tricky_audit_wrapper:
+        waivers:
+          xccdf_org.cisecurity.benchmarks_rule_1.1.1.1_Ensure_mounting_of_cramfs_filesystems_is_disabled:
+            expiration_date: "2040-01-01"
+            run: false
+            justification: "We need some CramFS dude!!!"
+<% if (ENV['a2fqdn'] && ENV['a2token']) %>
+      audit:
+        reporter: ['chef-automate', 'json-file']
+        fetcher: 'chef-automate'
+        insecure: true
+<% end %>
+
